@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório de Tarefas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- 🌗 Botão de alternância de tema -->
+  <button id="toggle-theme" class="theme-toggle">🌙</button>
+
+  <div class="container">
+    <!-- 🖼️ Logo -->
+    <div class="logo-wrapper">
+      <img src="/logo.png" alt="Relatório de Tarefas" class="logo">
+    </div>
+
+    <h1>Registro de Tarefas</h1>
+
+    <form id="formulario" method="POST" action="/salvar">
+      <label>Nome:</label>
+      <input type="text" name="nome" required>
+
+      <label>NP:</label>
+      <input type="text" name="np" required>
+
+      <label>Nome da Tarefa:</label>
+      <input type="text" name="tarefa" required>
+
+      <label>Descrição:</label>
+      <textarea name="descricao" required></textarea>
+
+      <label>Tempo:</label>
+      <input type="text" id="tempo" name="tempo" readonly value="00:00:00">
+
+      <div class="buttons">
+        <button type="button" onclick="startTimer()">Play</button>
+        <button type="button" onclick="pauseTimer()">Pausar</button>
+        <button type="button" onclick="resetTimer()">Cancelar</button>
+        <button type="button" class="lixeira" onclick="clearForm()">🗑️</button>
+        <button type="submit">Salvar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ✅ Scripts no final -->
+  <script>
+    // ⏱️ CRONÔMETRO
+    let timer;
+    let seconds = 0;
+    let isRunning = false;
+
+    function formatTime(s) {
+      const hrs = String(Math.floor(s / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+      const secs = String(s % 60).padStart(2, '0');
+      return `${hrs}:${mins}:${secs}`;
+    }
+
+    function updateDisplay() {
+      document.getElementById('tempo').value = formatTime(seconds);
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+      isRunning = true;
+      timer = setInterval(() => {
+        seconds++;
+        updateDisplay();
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timer);
+      isRunning = false;
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      seconds = 0;
+      updateDisplay();
+    }
+
+    function clearForm() {
+      document.getElementById('formulario').reset();
+      resetTimer();
+    }
+
+    // 🌗 MODO ESCURO / CLARO
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.getElementById('toggle-theme');
+      const currentTheme = localStorage.getItem('theme');
+
+      if (currentTheme === 'dark') {
+        document.body.classList.add('dark');
+        toggle.textContent = '☀️';
+      }
+
+      toggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    });
+  </script>
+</body>
+</html>

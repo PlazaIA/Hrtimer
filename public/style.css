@@ -1,0 +1,172 @@
+:root {
+    --bg-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --primary: #4CAF50;
+    --primary-hover: #45a049;
+    --text: #333;
+    --muted: #666;
+    --input-border: #ccc;
+    --shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    --radius: 12px;
+    --font: 'Inter', sans-serif;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    font-family: var(--font);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  
+  .container {
+    background: var(--card-bg);
+    padding: 32px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    max-width: 520px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+  }
+  
+  h1 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  label {
+    font-weight: 500;
+    display: block;
+    margin: 18px 0 6px;
+  }
+  
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background-color: #fefefe;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+  }
+  
+  input[type="text"]:focus,
+  textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+  
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  button {
+    flex: 1 1 48%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+  }
+  
+  button[type="submit"] {
+    background-color: var(--primary);
+    color: white;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  button:not([type="submit"]) {
+    background-color: #e9ecef;
+    color: #333;
+  }
+  
+  button:not([type="submit"]):hover {
+    background-color: #dcdfe3;
+  }
+  
+  .logo-wrapper {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  
+  .logo {
+    max-width: 180px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+  }
+  body.dark {
+    background-color: #1e1e1e;
+    color: #eee;
+  }
+  
+  body.dark .container {
+    background-color: #2c2c2c;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+  
+  body.dark input,
+  body.dark textarea {
+    background-color: #444;
+    color: #eee;
+    border: 1px solid #666;
+  }
+  
+  body.dark button:not([type="submit"]) {
+    background-color: #555;
+    color: #eee;
+  }
+  
+  body.dark button:not([type="submit"]):hover {
+    background-color: #666;
+  }
+  
+  body.dark button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .theme-toggle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+  }
+  /* Botão de lixeira */
+button.lixeira {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  button.lixeira:hover {
+    background-color: #f1b0b7;
+  }
+  
