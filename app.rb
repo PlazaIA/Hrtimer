@@ -2,15 +2,48 @@ require 'sinatra'
 require 'caxlsx'
 require 'tempfile'
 require 'fileutils'
+require 'rack/protection'
 
+# Redireciona todo tráfego HTTP para HTTPS
+before do
+  if request.scheme == 'http'
+    redirect request.url.sub('http', 'https'), 301
+  end
+end
+
+# Headers de segurança adicionais
+before do
+  headers 'X-Content-Type-Options' => 'nosniff',
+          'X-Frame-Options' => 'DENY',
+          'Referrer-Policy' => 'no-referrer',
+          'Permissions-Policy' => 'camera=(), microphone=(), geolocation=()',
+          'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains; preload'
+end
+
+# Configurações do Sinatra
 set :public_folder, 'public'
 set :port, ENV['PORT'] || 4567
 set :bind, '0.0.0.0'
 
+# Middleware de segurança
+use Rack::Protection
+use Rack::Protection::XSSHeader
+use Rack::Protection::FrameOptions
+use Rack::Protection::HttpOrigin
+
+# Página inicial
 get '/' do
   erb :index
 end
 
+# Sanitização de dados para prevenir fórmulas perigosas
+def sanitize_excel_cell(text)
+  return "" unless text
+  t = text.to_s.strip
+  t.start_with?('=', '+', '-', '@') ? "'#{t}" : t
+end
+
+# Rota de salvamento
 post '/salvar' do
   nome = params[:nome]
   np = params[:np]
@@ -25,7 +58,13 @@ post '/salvar' do
   Axlsx::Package.new do |p|
     p.workbook.add_worksheet(name: "Relatório") do |sheet|
       sheet.add_row ["Nome", "NP", "Tarefa", "Descrição", "Tempo"]
-      sheet.add_row [nome, np, tarefa, descricao, tempo]
+      sheet.add_row [
+        sanitize_excel_cell(nome),
+        sanitize_excel_cell(np),
+        sanitize_excel_cell(tarefa),
+        sanitize_excel_cell(descricao),
+        sanitize_excel_cell(tempo)
+      ]
     end
     p.serialize(temp_file.path)
   end
