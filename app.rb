@@ -29,7 +29,8 @@ set :bind, '0.0.0.0'
 use Rack::Protection
 use Rack::Protection::XSSHeader
 use Rack::Protection::FrameOptions
-use Rack::Protection::HttpOrigin
+use Rack::Protection::HttpOrigin, origin_whitelist: ['https://hrsavetimer.site', 'http://localhost:4567']
+
 
 # Página inicial
 get '/' do
